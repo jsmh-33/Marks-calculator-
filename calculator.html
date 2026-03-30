@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Result Calculator</title>
+
+<style>
+    body {
+        font-family: Arial;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        text-align: center;
+        padding: 20px;
+    }
+
+    h1 {
+        color: orange;
+    }
+
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        width: 350px;
+        margin: auto;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    th {
+        background: #4facfe;
+        color: green;
+        padding: 10px;
+    }
+
+    td {
+        padding: 8px;
+    }
+
+    input {
+        width: 60px;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        background: #4facfe;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #00c6ff;
+        transform: scale(1.1);
+    }
+
+    /* Loading Spinner */
+    .loader {
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #4facfe;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 15px auto;
+        display: none;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    #result {
+        margin-top: 15px;
+        font-weight: bold;
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>🎓 Student Result Calculator</h1>
+
+<div class="container">
+
+<table border="1" cellpadding="10" cellspacing="5">
+<tr><th>Subject</th><th>Marks</th></tr>
+
+<tr><td>Theory 1</td><td><input type="number" class="mark" min="0" max="100"></td></tr>
+<tr><td>Theory 2</td><td><input type="number" class="mark"></td></tr>
+<tr><td>Theory 3</td><td><input type="number" class="mark"></td></tr>
+<tr><td>Theory 4</td><td><input type="number" class="mark"></td></tr>
+<tr><td>Theory 5</td><td><input type="number" class="mark"></td></tr>
+<tr><td>Theory 6</td><td><input type="number" class="mark"></td></tr>
+
+<tr><td>Lab 1</td><td><input type="number" class="mark"></td></tr>
+<tr><td>Lab 2</td><td><input type="number" class="mark"></td></tr>
+<tr><td>Lab 3</td><td><input type="number" class="mark"></td></tr>
+
+</table>
+
+<button onclick="showLoading()">Calculate</button>
+
+<div class="loader" id="loader"></div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+function showLoading() {
+    let marks = document.querySelectorAll(".mark");
+
+    // Validation first
+    for (let i = 0; i < marks.length; i++) {
+        let value = parseInt(marks[i].value);
+
+        if (isNaN(value) || value < 0 || value > 100) {
+            alert("❌ Enter marks between 0 and 100");
+            return;
+        }
+    }
+
+    document.getElementById("result").style.display = "none";
+    document.getElementById("loader").style.display = "block";
+
+    // Delay result (simulate loading)
+    setTimeout(calculateResult, 2000);
+}
+
+function calculateResult() {
+    let marks = document.querySelectorAll(".mark");
+    let total = 0;
+    let fail = false;
+
+    for (let i = 0; i < marks.length; i++) {
+        let value = parseInt(marks[i].value);
+
+        if (value < 40) {
+            fail = true;
+        }
+
+        total += value;
+    }
+
+    let percentage = (total / 900) * 100;
+    let resultText = fail ? "Fail ❌" : "Pass ✅";
+
+    document.getElementById("loader").style.display = "none";
+
+    let resultDiv = document.getElementById("result");
+    resultDiv.style.display = "block";
+
+    resultDiv.innerHTML = `
+        Total Marks: ${total} / 900 <br>
+        Percentage: ${percentage.toFixed(2)}% <br>
+        Result: ${resultText}
+    `;
+}
+</script>
+
+</body>
+</html>
